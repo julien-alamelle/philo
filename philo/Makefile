@@ -27,7 +27,7 @@ clean:
 $(BIN): $(OBJ_FILES)
 	$(CC) $(CFLAGS) -o $@ $^
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCL_FILES) $(OBJDIR)
+$(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCL_FILES) | $(OBJDIR)
 	$(CC) $(CFLAGS) -o $@ -c $<
 
 $(OBJDIR):
