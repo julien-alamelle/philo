@@ -1,4 +1,18 @@
-#include <pthread.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fork_mutex.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jalamell <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/10 17:19:04 by jalamell          #+#    #+#             */
+/*   Updated: 2022/08/11 16:12:15 by jalamell         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include <stdlib.h>
+#include <unistd.h>
+#include "philo.h"
 
 typedef struct s_fork
 {
@@ -6,17 +20,17 @@ typedef struct s_fork
 	pthread_mutex_t	*forks;
 }	t_fork;
 
-static void	*fork_delete(t_fork fork, int nb_to_delete)
+static void	*fork_delete(t_fork *fork, int nb_to_delete)
 {
 	if (!fork)
 		return (0);
 	if (nb_to_delete >= 0 && fork->forks)
 	{
 		while (nb_to_delete--)
-			phtread_mutex_delete(fork->forks + nb_to_delete);
+			pthread_mutex_destroy(fork->forks + nb_to_delete);
 		free(fork->forks);
 	}
-	free(fork)
+	free(fork);
 	return (0);
 }
 
@@ -39,28 +53,33 @@ void	*ft_fork_init(int nb_philo)
 	return (ret);
 }
 
-void	ft_eat(void *fork, int id)
+void	ft_eat(t_philo *philo, volatile long *stop)
 {
-	t_fork *const	tfork = fork;
-	pthread_mutex_t	*m1;
-	pthread_mutex_t	*m2;
+	t_fork *const			tfork = philo->data->fork;
+	pthread_mutex_t			*m1;
+	pthread_mutex_t			*m2;
+	pthread_mutex_t *const	m3 = &philo->mutex;
 
-	if (id)
-		m1 = tfork->forks + id - 1;
+	if (philo->id)
+		m1 = tfork->forks + philo->id - 1;
 	else
 		m1 = tfork->forks + tfork->nb_philo - 1;
 	m2 = m1;
-	if (id % 2)
-		m1 = tfork->forks + id;
+	if ((philo->id) % 2)
+		m2 = tfork->forks + philo->id;
 	else
-		m2 = tfork->forks + id;
+		m1 = tfork->forks + philo->id;
 	pthread_mutex_lock(m1);
-	ft_log(id, 0);
+	ft_log(philo->id, 0);
 	pthread_mutex_lock(m2);
-	ft_log(id, 0);
-	ft_log(id, 1);
-	pthread_mutex_lock(m1);
-	pthread_mutex_lock(m2);
+	ft_log(philo->id, 0);
+	pthread_mutex_lock(m3);
+	philo->last_eat = ft_get_time(0);
+	pthread_mutex_unlock(m3);
+	ft_log(philo->id, 1);
+	ft_usleep(philo->data->time_to_eat, stop);
+	pthread_mutex_unlock(m1);
+	pthread_mutex_unlock(m2);
 }
 
 void	*ft_fork_delete(void *fork)

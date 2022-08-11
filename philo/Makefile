@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall -Wextra -Werror -I $(INCLDIR) -lpthread -fsanitize=address -g3
+CFLAGS=-Wall -Wextra -Werror -I $(INCLDIR) #-fsanitize=thread -g3 
 RM=rm -rf
 MD=mkdir -p
 
@@ -7,7 +7,7 @@ SRCDIR=src
 OBJDIR=.obj
 INCLDIR=incl
 
-CFILES=main
+CFILES=main fork_mutex log time util philo
 HFILES=philo
 BIN=philo
 
