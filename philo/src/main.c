@@ -6,7 +6,7 @@
 /*   By: jalamell <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/10 17:19:35 by jalamell          #+#    #+#             */
-/*   Updated: 2022/09/08 11:13:39 by jalamell         ###   ########lyon.fr   */
+/*   Updated: 2022/09/08 16:02:45 by jalamell         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,15 @@ static int	ft_exit(t_data *data, t_philo *tab)
 {
 	int	i;
 
-	data->nb_philo = 0;
 	if (tab)
 	{
+		i = -1;
+		while (tab[++i].philo)
+		{
+			pthread_mutex_lock(&tab[i].mutex);
+			tab[i].finish = -1;
+			pthread_mutex_unlock(&tab[i].mutex);
+		}
 		i = -1;
 		while (tab[++i].philo)
 		{
@@ -60,19 +66,19 @@ static int	ft_exit(t_data *data, t_philo *tab)
 static void	philo_loop(t_philo *tab, t_data *data, int nb)
 {
 	int	i;
-	int	last;
+	int	todo;
 
 	i = -1;
-	last = nb - 1;
-	ft_usleep(3, &(data->nb_philo));
-	while (1)
+	todo = data->nb_philo;
+	ft_usleep(3);
+	while (todo)
 	{
 		i = (i + 1) % nb;
-		if (!(tab[i].finish && data->must_eat))
-			last = i;
-		else if (last == i)
-			return ;
 		pthread_mutex_lock(&tab[i].mutex);
+		if (!(tab[i].finish && data->must_eat))
+			todo = data->nb_philo;
+		else
+			--todo;
 		if (ft_get_time(0) > tab[i].last_eat + data->time_to_die)
 		{
 			ft_log(i, 4);

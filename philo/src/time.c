@@ -6,7 +6,7 @@
 /*   By: jalamell <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/10 18:13:27 by jalamell          #+#    #+#             */
-/*   Updated: 2022/09/07 16:13:49 by jalamell         ###   ########lyon.fr   */
+/*   Updated: 2022/09/08 14:15:05 by jalamell         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,14 @@ int	ft_get_time(int init)
 		+ (curr.tv_usec - start.tv_usec) / 1000);
 }
 
-void	ft_usleep(int time, volatile long *stop)
+void	ft_usleep(int time)
 {
 	const int	start = ft_get_time(0);
 	int			done;
 
 	usleep(800 * time);
 	done = ft_get_time(0) - start;
-	while (*stop && done < time)
+	while (done < time)
 	{
 		usleep(500);
 		done = ft_get_time(0) - start;

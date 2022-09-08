@@ -6,7 +6,7 @@
 /*   By: jalamell <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/10 15:49:07 by jalamell          #+#    #+#             */
-/*   Updated: 2022/08/11 16:54:06 by jalamell         ###   ########lyon.fr   */
+/*   Updated: 2022/09/08 14:23:15 by jalamell         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ typedef struct s_philo
 }	t_philo;
 
 void	*ft_fork_init(int nb_philo);
-void	ft_eat(t_philo *philo, volatile long *stop);
+void	ft_eat(t_philo *philo);
 void	*ft_fork_delete(void *fork);
 
 int		ft_log_init(void);
@@ -44,7 +44,7 @@ int		ft_log(int id, int log_type);
 void	ft_log_clear(void);
 
 int		ft_get_time(int init);
-void	ft_usleep(int time, volatile long *stop);
+void	ft_usleep(int time);
 
 void	*ft_calloc(int nb_block, int size_blocks);
 int		ft_atoi(char *str);

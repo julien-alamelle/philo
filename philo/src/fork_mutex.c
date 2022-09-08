@@ -6,7 +6,7 @@
 /*   By: jalamell <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/10 17:19:04 by jalamell          #+#    #+#             */
-/*   Updated: 2022/08/11 16:12:15 by jalamell         ###   ########lyon.fr   */
+/*   Updated: 2022/09/08 14:22:51 by jalamell         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	*ft_fork_init(int nb_philo)
 	return (ret);
 }
 
-void	ft_eat(t_philo *philo, volatile long *stop)
+void	ft_eat(t_philo *philo)
 {
 	t_fork *const			tfork = philo->data->fork;
 	pthread_mutex_t			*m1;
@@ -77,7 +77,7 @@ void	ft_eat(t_philo *philo, volatile long *stop)
 	philo->last_eat = ft_get_time(0);
 	pthread_mutex_unlock(m3);
 	ft_log(philo->id, 1);
-	ft_usleep(philo->data->time_to_eat, stop);
+	ft_usleep(philo->data->time_to_eat);
 	pthread_mutex_unlock(m1);
 	pthread_mutex_unlock(m2);
 }

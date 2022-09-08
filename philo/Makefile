@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall -Wextra -Werror -I $(INCLDIR) #-fsanitize=thread -g3 
+CFLAGS=-Wall -Wextra -Werror -I $(INCLDIR)# -fsanitize=thread -g3 
 RM=rm -rf
 MD=mkdir -p
 
