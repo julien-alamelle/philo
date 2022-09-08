@@ -6,11 +6,12 @@
 /*   By: jalamell <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/10 17:19:35 by jalamell          #+#    #+#             */
-/*   Updated: 2022/08/11 16:54:28 by jalamell         ###   ########lyon.fr   */
+/*   Updated: 2022/09/08 11:13:39 by jalamell         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <unistd.h>
 #include "philo.h"
 
@@ -25,7 +26,12 @@ static int	data_init(t_data *data, int ac, char **av)
 	data->must_eat = ft_atoi(av[4]);
 	if (data->nb_philo < 1 || data->time_to_die < 0 || data->time_to_eat < 0
 		|| data->time_to_sleep < 0 || data->must_eat < 0)
-		return (write(2, "Error: Bad arguments", 20));
+		return (write(2, "Error: Bad arguments\n", 21));
+	if (ac == 5 && data->must_eat <= 0)
+		return (1);
+	if (data->nb_philo == 1)
+		return (printf("0 1 has taken a fork\n%ld 1 died\n",
+				data->time_to_die));
 	ft_log_init();
 	data->fork = ft_fork_init(data->nb_philo);
 	return (0);
@@ -58,6 +64,7 @@ static void	philo_loop(t_philo *tab, t_data *data, int nb)
 
 	i = -1;
 	last = nb - 1;
+	ft_usleep(3, &(data->nb_philo));
 	while (1)
 	{
 		i = (i + 1) % nb;
@@ -98,8 +105,6 @@ int	main(int ac, char **av)
 	t_philo	*tab;
 
 	tab = 0;
-	if (ac == 6 && ft_atoi(av[5]) <= 0)
-		return (0);
 	if (data_init(&data, ac - 1, av + 1))
 		return (0);
 	nb = data.nb_philo;

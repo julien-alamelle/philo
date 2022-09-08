@@ -6,7 +6,7 @@
 /*   By: jalamell <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/11 16:53:07 by jalamell          #+#    #+#             */
-/*   Updated: 2022/08/11 16:54:14 by jalamell         ###   ########lyon.fr   */
+/*   Updated: 2022/09/07 16:27:15 by jalamell         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	*ft_philo(void *arg)
 	int						nb;
 	volatile long *const	stop = &(p->data->nb_philo);
 
+	if (p->id & 1)
+		ft_usleep(5, stop);
 	nb = p->data->must_eat;
 	while (*stop)
 	{

@@ -6,7 +6,7 @@
 /*   By: jalamell <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/10 18:13:27 by jalamell          #+#    #+#             */
-/*   Updated: 2022/08/11 15:39:25 by jalamell         ###   ########lyon.fr   */
+/*   Updated: 2022/09/07 16:13:49 by jalamell         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	ft_usleep(int time, volatile long *stop)
 	const int	start = ft_get_time(0);
 	int			done;
 
+	usleep(800 * time);
 	done = ft_get_time(0) - start;
 	while (*stop && done < time)
 	{
